@@ -7,6 +7,7 @@ This runbook is designed to assist in the assessment of the OpenFOAM CFD Softwar
 OpenFOAM is the free, open source CFD software released and developed primarily by OpenCFD Ltd since 2004. It has a large user base across most areas of engineering and science, from both commercial and academic organisations. OpenFOAM has an extensive range of features to solve anything from complex fluid flows involving chemical reactions, turbulence and heat transfer, to acoustics, solid mechanics and electromagnetics.
 
 <img src="https://github.com/oci-hpc/oci-hpc-runbook-openfoam/blob/master/images/sim.gif" height="120" align="middle">
+
 ## Architecture
 In addition it authenticates all of the nodes on the cluster and creates a common share directory to be used for each of the nodes. A bastion host is created and a cluster of BM.HPC2.36 instances. A public IP is assigned to the network with port 22 open. The Jumpbox can be accessed with the following command:
 ```
