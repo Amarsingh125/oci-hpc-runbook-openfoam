@@ -1,6 +1,6 @@
-# ![](https://github.com/oci-hpc/oci-hpc-runbook-openfoam/blob/master/images/openfoam.png =150x150 "OpenFOAM logo")OpenFOAM Runbook
+# <img src="https://github.com/oci-hpc/oci-hpc-runbook-openfoam/blob/master/images/openfoam.png" height="48"> Runbook
 
-<img src="https://github.com/oci-hpc/oci-hpc-runbook-openfoam/blob/master/images/openfoam.png" height="24">
+
 
 ## Introduction
 This runbook is designed to assist in the assessment of the OpenFOAM CFD Software in Oracle Cloud Infrastructure. It automatically downloads and configures OpenFOAM. 
