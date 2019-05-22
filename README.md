@@ -1,5 +1,7 @@
 # ![](https://github.com/oci-hpc/oci-hpc-runbook-openfoam/blob/master/images/openfoam.png =150x150 "OpenFOAM logo")OpenFOAM Runbook
 
+<img src="https://github.com/oci-hpc/oci-hpc-runbook-openfoam/blob/master/images/openfoam.png" height="24">
+
 ## Introduction
 This runbook is designed to assist in the assessment of the OpenFOAM CFD Software in Oracle Cloud Infrastructure. It automatically downloads and configures OpenFOAM. 
 OpenFOAM is the free, open source CFD software released and developed primarily by OpenCFD Ltd since 2004. It has a large user base across most areas of engineering and science, from both commercial and academic organisations. OpenFOAM has an extensive range of features to solve anything from complex fluid flows involving chemical reactions, turbulence and heat transfer, to acoustics, solid mechanics and electromagnetics.
