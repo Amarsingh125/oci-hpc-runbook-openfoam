@@ -17,6 +17,11 @@ Four different types of file storage are created alongside the cluster. One NFS 
 ![](https://github.com/oci-hpc/oci-hpc-runbook-openfoam/blob/master/images/HPC_arch_draft.png "Architecture for running OpenFOAM in OCI")
 ## Deployment
 
+Deploying this architecture on OCI can be done in different ways.
+* The [resource Manager](https://github.com/oci-hpc/oci-hpc-runbook-openfoam/blob/master/Documentation/ResourceManager.md#deployment-through-resource-manager) let you deploy it from the console. Only relevant variables are shown but others can be changed in the zip file. 
+* [Terraform](https://github.com/oci-hpc/oci-hpc-runbook-openfoam/blob/master/Documentation/terraform.md#terraform-installation) is a scripting language for deploying resources. It is the foundation of the Resource Manager, using it will be easier if you need to make modifications to the terraform stack often. 
+* The [web console](https://github.com/oci-hpc/oci-hpc-runbook-openfoam/blob/master/Documentation/ManualDeployment.md#deployment-via-web-console) let you create each piece of the architecture one by one from a webbrowser. This can be used to avoid any terraform scripting or using existing templates. 
+
 ## Installation
 A number of packages are installed during deployment in order to support the NFS share and the tools that are used to create the authentication. During the authentication phase of the deployment, files named nodenames.txt and nodeips.txt are placed in ~/bin. Each of these nodes should be accesible with the following command:
 ```
