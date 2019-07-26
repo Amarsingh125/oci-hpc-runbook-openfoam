@@ -58,7 +58,7 @@ In the ressource menu on the left side of the page, select NAT Gateways.
 
 Click <img src="https://github.com/oci-hpc/oci-hpc-runbook-shared/raw/master/images/NAT.png" height="20">
 
-Choose a name (Ex:STARCCM_NAT) and click <img src="https://github.com/oci-hpc/oci-hpc-runbook-shared/raw/master/images/NAT.png" height="20">
+Choose a name (Ex:OPENFOAM_NAT) and click <img src="https://github.com/oci-hpc/oci-hpc-runbook-shared/raw/master/images/NAT.png" height="20">
 
 
 ### Security List
@@ -66,7 +66,7 @@ In the ressource menu on the left side of the page, select Security Lists.
 
 Click on <img src="https://github.com/oci-hpc/oci-hpc-runbook-shared/raw/master/images/create_sl.png" height="20">
 
-Select a name like STARCCM_Private_SecList
+Select a name like OPENFOAM_Private_SecList
 
 Add an Ingress Rule with CIDR 10.0.0.0/16 and select All Protocols
 
@@ -74,7 +74,7 @@ Add an Egress Rule with CIDR 0.0.0.0/0 and select All Protocols
 
 Click on <img src="https://github.com/oci-hpc/oci-hpc-runbook-shared/raw/master/images/create_sl.png" height="20">
 
-To allow the creation of a Network File System, we also need to add sa couple of ingress rules for the Default Security List for STARCCM_VCN. Click on "Default Security List for STARCCM_VCN" in the list. 
+To allow the creation of a Network File System, we also need to add sa couple of ingress rules for the Default Security List for OPENFOAM_VCN. Click on "Default Security List for OPENFOAM_VCN" in the list. 
 
 Add one ingress rules for all ports on TCP for NFS. 
 
@@ -104,13 +104,13 @@ In the ressource menu on the left side of the page, select Route Tables.
 
 Click on <img src="https://github.com/oci-hpc/oci-hpc-runbook-shared/raw/master/images/create_rt.png" height="20">
 
-Change the name to STARCCM_Private_RT
+Change the name to OPENFOAM_Private_RT
 
 Click + Additional Route Rule and select the settings:
 
 * TARGET TYPE : NAT Gateway
 * DESTINATION CIDR BLOCK : 0.0.0.0/0
-* TARGET NAT GATEWAY : STARCCM_NAT
+* TARGET NAT GATEWAY : OPENFOAM_NAT
 
 Click on <img src="https://github.com/oci-hpc/oci-hpc-runbook-shared/raw/master/images/create_rt.png" height="20">
 
@@ -120,12 +120,12 @@ Click on <img src="https://github.com/oci-hpc/oci-hpc-runbook-shared/raw/master/
 
 Choose the following settings:
 
-* NAME : STARCCM_Private_Subnet
+* NAME : OPENFOAM_Private_Subnet
 * TYPE: "REGIONAL"
 * CIDR BLOCK: 10.0.3.0/24
-* ROUTE TABLE: STARCCM_Private_RT
+* ROUTE TABLE: OPENFOAM_Private_RT
 * SUBNET ACCESS: "PRIVATE SUBNET"
-* SECURITY LIST: STARCCM_Private_SecList
+* SECURITY LIST: OPENFOAM_Private_SecList
 
 Click on <img src="https://github.com/oci-hpc/oci-hpc-runbook-shared/raw/master/images/create_subnet.png" height="20">
 
@@ -269,7 +269,7 @@ After creating the headnode, you generated a key for the cluster using `ssh.keyg
 
 ## Adding a GPU Node for pre/post processing
 
-Simcenter STAR-CCM+ can let you take advantage of the power of GPUs for post-processing your model. We can turn a GPU node on demand while the simulation is done. 
+Postprocessing OpenFOAM is typically done with Paraview and can take advantage of the power of GPUs. We can turn a GPU node on demand when the simulation is done. 
 
 Create a new instance by selecting the menu <img src="https://github.com/oci-hpc/oci-hpc-runbook-shared/blob/master/images/menu.png" height="20"> on the top left, then select Compute and Instances. 
 
@@ -305,27 +305,38 @@ sudo mkdir /mnt/share
 sudo mount 10.0.0.2:/mnt/share /mnt/share
 ```
 
-You will need to follow the steps to set up a VNC session described below. Once you did that, in STAR-CCM+, select Tools from the top menu then options and visualization. In the GPU Utilization, select Default, Unmanaged or Opportunistic to utilize the GPU. The difference in the visualization modes are explained in the STAR-CCM+ Documentation under "Controlling Graphics Performance"
+## Paraview
 
-
-## Set up a VNC
+## Setting up X11VNC
 If you used terraform to create the cluster, this step has been done already for the GPU instance.
 
-By default, the only access to the CentOS machine is through SSH in a console mode. If you want to see the Ansys EDT interface, you will need to set up a VNC connection. The following script will work for the default user opc. The password for the vnc session is set as "password" but it can be edited in the next commands. 
+By default, the only access to the Oracle Linux machine is through SSH in a console mode. If you want to see the graphical interface, you will need to set up a VNC connection. The following script will work for the default user opc. The password for the vnc session is set as "password" but it can be edited in the next commands. 
 
 ```
 sudo yum -y groupinstall "Server with GUI"
-sudo yum -y install tigervnc-server mesa-libGL
-sudo systemctl set-default graphical.target
-sudo cp /usr/lib/systemd/system/vncserver@.service /etc/systemd/system/vncserver@:0.service
-sudo sed -i 's/<USER>/opc/g' /etc/systemd/system/vncserver@:0.service
+sudo yum -y install x11vnc mesa-libGL
+sudo nvidia-xconfig --enable-all-gpus --separate-x-screens
+sudo systemctl isolate multi-user.target
+sudo systemctl isolate graphical.target
 sudo mkdir /home/opc/.vnc/
 sudo chown opc:opc /home/opc/.vnc
 echo "password" | vncpasswd -f > /home/opc/.vnc/passwd
 chown opc:opc /home/opc/.vnc/passwd
 chmod 600 /home/opc/.vnc/passwd
-sudo systemctl start vncserver@:0.service
-sudo systemctl enable vncserver@:0.service
+sudo x11vnc -rfbauth ~/.vnc/passwd  -auth /var/lib/gdm/:0.Xauth -display :0 -forever -bg -repeat -nowf -o ~/.vnc/x11vnc.log
+```
+
+During the login, you will need to use the opc password. It has not been set by default. You can choose one with 
+* 1 Uppercase Letter
+* 1 Lowercase Letter
+* 1 Number
+* 1 Symbol
+* Not a dictionary word. 
+
+Set it with the following commands. 
+
+```
+sudo passwd opc 
 ```
 
 ## Accessing a VNC
@@ -361,15 +372,8 @@ Once you accessed your VNC session, you should go into Applications, then System
 
 <img src="https://github.com/oci-hpc/oci-hpc-runbook-shared/raw/master/images/CentOSSeetings.jpg" height="100"> 
 
-In the power options, set the Blank screen timeout to "Never". If you do get locked out of your user session, you can ssh to the instance and set a password for the opc user. 
-
-```
-sudo passwd opc
-```
-
 # Installation
-This guide will show the different steps for the Oracle Linux 7.6 image available on Oracle Cloud Infrastructure. 
-If you have used the terraform or Resource Manager approach, only the download and installation of STAR-CCM+ on the headnode is needed. 
+This guide will show the different steps for the Oracle Linux 7.6 image available on Oracle Cloud Infrastructure.  
 
 ## Connecting all compute node
 
@@ -392,7 +396,7 @@ chmod 777 generate_ssh_file.sh
 ## Create a machinefile
 
 If you used terraform to create the cluster, this step has been done already. 
-STAR-CCM+ on the headnode does not automatically know which compute nodes are available. You can create a machinefile at `/mnt/share/install/machinefile.txt` with the private IP address of all the nodes along with the number of CPUs available. 
+OpenFOAM on the headnode does not automatically know which compute nodes are available. You can create a machinefile at `/mnt/share/install/machinefile.txt` with the private IP address of all the nodes along with the number of CPUs available. 
 
 ```
 10.0.0.2:72
