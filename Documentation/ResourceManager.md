@@ -8,7 +8,7 @@
 - [Deployment through Resource Manager](#deployment-through-resource-manager)
   - [Log In](#log-in)
   - [Resource Manager](#resource-manager)
-  - [Add STAR-CCM+ installer to Object Storage](#add-star-ccm-installer-to-object-storage)
+  - [Add OpenFOAM binaries to Object Storage](#add-openfoam-binaries-to-object-storage)
   - [Select variables](#select-variables)
   - [Run the stack](#run-the-stack)
   - [Access your cluster](#access-your-cluster)
@@ -35,7 +35,10 @@ Upload the ZIP file
 
 Choose the Name and Compartment
 
-## Add STAR-CCM+ installer to Object Storage
+## Add OpenFOAM binarie to Object Storage
+
+There is a couple ways to install OpenFOAM, provide the compiled binaries or to build the sources. Building from sources is taking longer but the binaries need to be rebuilt for different platforms.
+
 Select the menu <img src="https://github.com/oci-hpc/oci-hpc-runbook-shared/blob/master/images/menu.png" height="20"> on the top left, then select Object Storage and Object Storage.
 
 Create a new bucket or select an existing one. To create one, click on <img src="https://github.com/oci-hpc/oci-hpc-runbook-shared/blob/master/images/create_bucket.png" height="20">
@@ -65,7 +68,8 @@ Click on <img src="https://github.com/oci-hpc/oci-hpc-runbook-shared/blob/master
 * GPUPASSWORD: password to use the VNC session on the Pre/Post Node
 * GPU_AD: Availability Domain of the GPU Machine (1, 2 or 3)
 * GPU_SHAPE: Shape of the Compute Node (VM.GPU2.1, BM.GPU2.2,...)
-* INSTALLER_URL: URL of the installer of STAR-CCM+
+* OPENFOAM_BINARIES: URL of the OpenFOAM binaries
+* OPENFOAM_SOURCES: URL of the OpenFOAM sources. Both ESI and foundation have been tested
 
 Click on <img src="https://github.com/oci-hpc/oci-hpc-runbook-shared/blob/master/images/next.png" height="20">
 
@@ -94,7 +98,7 @@ ssh -i /home/user/key opc@ipaddress
 Access to the GPU instances can be done through a SSH tunnel:
 
 ```
-ssh -i /home/user/key -x -L 5902:127.0.0.1:5900 opc@ipaddress
+ssh -i /home/user/key -L 5902:127.0.0.1:5900 opc@ipaddress
 ```
 
 And then connect to a VNC viewer with localhost:2.
