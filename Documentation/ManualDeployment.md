@@ -345,7 +345,7 @@ sudo passwd opc
 We will connect through an SSH tunnel to the instance. On your machine, connect using ssh 
 
 ```
-ssh -x -L 5902:127.0.0.1:5900 opc@public_ip
+ssh -L 5902:127.0.0.1:5900 opc@public_ip
 ```
 
 You can now connect using any VNC viewer using localhost:2 as VNC server and the password you set during the vnc installation. 
