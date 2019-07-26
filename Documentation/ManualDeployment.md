@@ -20,13 +20,14 @@
     - [Compute Nodes](#compute-nodes)
   - [Allow communication between machines](#allow-communication-between-machines)
   - [Adding a GPU Node for pre/post processing](#adding-a-gpu-node-for-prepost-processing)
-  - [Paraview](#paraview)
   - [Setting up X11VNC](#setting-up-x11vnc)
   - [Accessing a VNC](#accessing-a-vnc)
 - [Installation](#installation)
   - [Connecting all compute node](#connecting-all-compute-node)
   - [Create a machinefile](#create-a-machinefile)
   - [Disable Hyperthreading](#disable-hyperthreading)
+  - [OpenFOAM](#openfoam)
+  - [Paraview](#paraview)
 
 ## Log In
 You can start by logging in the Oracle Cloud console. If this is the first time, instructions to do so are available [here](https://docs.cloud.oracle.com/iaas/Content/GSG/Tasks/signingin.htm).
@@ -417,3 +418,40 @@ for i in {36..71}; do
    echo 0 | sudo tee /sys/devices/system/cpu/cpu${i}/online;
 done
 ```
+
+## OpenFOAM
+
+If you have the correct binaries of your OpenFOAM version. Just untar it and you are ready to go. 
+
+If you want to install from sources, modify the path to the tarballs in the next commands. This example has the foundation OpenFOAM sources. OpenFOAM from ESI has also been tested. To share the installation between the different compute nodes, install on the network file system.   
+
+```
+sudo yum groupinstall -y 'Development Tools'
+sudo yum -y install devtoolset-8 gcc-c++ zlib-devel openmpi openmpi-devel
+cd /mnt/nfs
+wget -O - http://dl.openfoam.org/source/7 | tar xvz
+wget -O - http://dl.openfoam.org/third-party/7 | tar xvz
+mv OpenFOAM-7-version-7 OpenFOAM-7
+mv ThirdParty-7-version-7 ThirdParty-7
+export PATH=/usr/lib64/openmpi/bin/:/usr/lib64/qt5/bin/:$PATH
+echo export PATH=/usr/lib64/openmpi/bin/:\$PATH | sudo tee -a ~/.bashrc
+echo export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib/:\$LD_LIBRARY_PATH | sudo tee -a ~/.bashrc
+echo source /mnt/nfs/OpenFOAM-7/etc/bashrc | sudo tee -a ~/.bashrc
+sudo ln -s /usr/lib64/libboost_thread-mt.so /usr/lib64/libboost_thread.so
+source ~/.bashrc
+cd /mnt/nfs/OpenFOAM-7
+./Allwmake -j
+```
+
+## Paraview
+
+Select an installation directory. The Network File System is probably a good place to put it. 
+
+```
+sudo yum install -y mesa-libGLU
+cd /mnt/nfs/
+curl -d submit="Download" -d version="v5.7" -d type="binary" -d os="Linux" -d downloadFile="ParaView-5.7.0-RC1-MPI-Linux-64bit.tar.gz" https://www.paraview.org/paraview-downloads/download.php > file.tar.gz
+tar -xf file.tar.gz
+```
+
+Since x11vnc is used, paraview runs on the GPU and the NVIDIA driver are being used. 
