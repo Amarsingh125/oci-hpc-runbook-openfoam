@@ -84,6 +84,7 @@ Click <img src="https://github.com/oci-hpc/oci-hpc-runbook-shared/blob/master/im
 * IP PROTOCOL: TCP
 * Source Port Range: All
 * Destination Port Range: All
+
 Click <img src="https://github.com/oci-hpc/oci-hpc-runbook-shared/blob/master/images/addIngress.png" height="20"> 
 
 Add another ingress rule for UDP for NFS:
@@ -94,6 +95,7 @@ Click <img src="https://github.com/oci-hpc/oci-hpc-runbook-shared/blob/master/im
 * IP PROTOCOL: UDP
 * Source Port Range: All
 * Destination Port Range:111,2049
+
 Click <img src="https://github.com/oci-hpc/oci-hpc-runbook-shared/blob/master/images/addIngress.png" height="20"> 
 
 
