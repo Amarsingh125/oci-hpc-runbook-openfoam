@@ -218,7 +218,7 @@ sudo mount /dev/nvme0n1 /mnt/local
 sudo chmod 777 /mnt/local
 ```
 
-Head Node:
+Head Node (local and share):
 ```
 sudo mkdir /mnt/share
 sudo mkdir /mnt/local
@@ -228,6 +228,12 @@ sudo chmod 777 /mnt/share
 sudo chmod 777 /mnt/local
 ```
 
+Head Node (share):
+```
+sudo mkdir /mnt/share
+sudo mount /dev/nvme0n1 /mnt/share
+sudo chmod 777 /mnt/share
+```
 
 ## Creating a Network File System
 
