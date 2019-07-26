@@ -103,6 +103,6 @@ ssh -i /home/user/key -L 5902:127.0.0.1:5900 opc@ipaddress
 
 And then connect to a VNC viewer with localhost:2.
 
-[More information](https://github.com/oci-hpc/oci-hpc-runbook-StarCCM/blob/master/Documentation/ManualDeployment.md#accessing-a-vnc) about using a VNC session. 
+[More information](https://github.com/oci-hpc/oci-hpc-runbook-openfoam/blob/master/Documentation/ManualDeployment.md#accessing-a-vnc) about using a VNC session. 
 
 
