@@ -13,7 +13,7 @@
 
 ## Terraform Installation
 
-Download the binaries on the [terraform website](https://www.terraform.io/) and unzip the package. Depending on your Linux distribution, it should be similar to this:
+Download the terraform binaries on the [terraform website](https://www.terraform.io/) and unzip the package. Depending on your Linux distribution, it should be similar to this:
 
 ```
 tf_install_dir=~/tf_install_dir
@@ -49,7 +49,7 @@ Edit the file terraform.tfvars for your settings, info can be found [on the terr
 **Note2: The private_key_path and fingerprint are not related to the ssh key to access the instance. You can create using those [instructions](https://docs.cloud.oracle.com/iaas/Content/API/Concepts/apisigningkey.htm). The SSH public and private keys can be generated like [this](https://docs.cloud.oracle.com/iaas/Content/GSG/Tasks/creatingkeys.htm)**
 
 
-In the variable.tf file, you can change the availability domain, the number of compute nodes, the number of GPU nodes, the shapes of the instances,... 
+In the variable.tf file, you can change the availability domain, the number of compute nodes, the number of GPU nodes, the shapes of the instances, the path to the OpenFOAM binaries or sources... 
 
 ### Run
 ```
@@ -82,7 +82,7 @@ ssh -i /home/user/key.pem opc@ipaddress
 Access to the GPU instances can be done through a SSH tunnel:
 
 ```
-ssh -i /home/user/key.pem -x -L 5902:127.0.0.1:5900 opc@ipaddress
+ssh -i /home/user/key.pem -L 5902:127.0.0.1:5900 opc@ipaddress
 ```
 
 And then connect to a VNC viewer with localhost:2.
