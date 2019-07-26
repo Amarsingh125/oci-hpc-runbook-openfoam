@@ -22,12 +22,6 @@ Deploying this architecture on OCI can be done in different ways.
 * [Terraform](https://github.com/oci-hpc/oci-hpc-runbook-openfoam/blob/master/Documentation/terraform.md#terraform-installation) is a scripting language for deploying resources. It is the foundation of the Resource Manager, using it will be easier if you need to make modifications to the terraform stack often. 
 * The [web console](https://github.com/oci-hpc/oci-hpc-runbook-openfoam/blob/master/Documentation/ManualDeployment.md#deployment-via-web-console) let you create each piece of the architecture one by one from a webbrowser. This can be used to avoid any terraform scripting or using existing templates. 
 
-## Installation
-A number of packages are installed during deployment in order to support the NFS share and the tools that are used to create the authentication. During the authentication phase of the deployment, files named nodenames.txt and nodeips.txt are placed in ~/bin. Each of these nodes should be accesible with the following command:
-```
-   ssh {username}\@{bm-public-ip-address}
-```
-In addition OpenFOAM version 2.3.1 is installed into the /mnt/resource/scratch/applications/ directory and the path to the OpenFOAM binary is added to ~.bashrc. The benchmark model that was selected at deploy time is downloaded and unpacked. It is placed in /mnt/resource/scratch/benchmark on the bastion. 
 ## Licensing
 Since OpenFOAM is open source there are no licensing considerations for this application.
 ## Running the Application
