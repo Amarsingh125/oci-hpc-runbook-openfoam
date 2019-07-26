@@ -455,3 +455,10 @@ tar -xf file.tar.gz
 ```
 
 Since x11vnc is used, paraview runs on the GPU and the NVIDIA driver are being used. 
+
+To access paraview from a web browser, you can start a server on the GPU node: 
+
+```
+cd /mnt/nfs/ParaView-5.7.0-RC1-MPI-Linux-64bit
+./bin/pvpython ./share/paraview-5.7/web/visualizer/server/pvw-visualizer.py  --content ./share/paraview-5.7/web/visualizer/www/ --data /mnt/nfs/ --port 8080
+```
