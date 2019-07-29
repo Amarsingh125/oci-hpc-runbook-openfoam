@@ -413,10 +413,10 @@ If you used terraform to create the cluster, this step has been done already.
 OpenFOAM on the headnode does not automatically know which compute nodes are available. You can create a machinefile at `/mnt/share/install/machinefile.txt` with the private IP address of all the nodes along with the number of CPUs available. 
 
 ```
-10.0.0.2:72
-10.0.3.2:72
-10.0.3.3:72
-privateIP:cores_available
+10.0.0.2 cpu=36
+10.0.3.2 cpu=36
+10.0.3.3 cpu=36
+privateIP cpu=cores_available
 ...
 ```
 
