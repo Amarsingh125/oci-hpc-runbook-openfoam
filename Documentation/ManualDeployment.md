@@ -342,7 +342,7 @@ During the login, you will need to use the opc password. It has not been set by 
 * 1 Symbol
 * Not a dictionary word. 
 
-Set it with the following commands. 
+Set it with the following commands. If the terraform or ORM scripts were used, the default password is `HPC_oci1`.
 
 ```
 sudo passwd opc 
