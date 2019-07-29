@@ -273,6 +273,7 @@ sudo mount 10.0.0.2:/mnt/share /mnt/share
 
 
 ## Allow communication between machines
+
 After creating the headnode, you generated a key for the cluster using `ssh.keygen`. We will need to send the file `~/.ssh/id_rsa` on all compute nodes. On the headnode, run ```scp /home/opc/.ssh/id_rsa 10.0.3.2:/home/opc/.ssh``` and run it for each compute node by changing the IP address. 
 
 ## Adding a GPU Node for pre/post processing
@@ -385,8 +386,7 @@ This guide will show the different steps for the Oracle Linux 7.6 image availabl
 
 ## Connecting all compute node
 
-If you used terraform to create the cluster, this step has been done already. 
-Each compute node needs to be able to talk to each compute node. SSH communication works but RSM has some issue if you don't have each host in the known host file. You can compute it using the CIDR block of you private subnet. 
+Each compute node needs to be able to talk to each compute node. SSH communication works but most applications have issues if all the hosts are not in the known host file. You can get all the nodes in your network using the CIDR block of your private subnet. 
 
 ```
 sudo yum install -y nmap
