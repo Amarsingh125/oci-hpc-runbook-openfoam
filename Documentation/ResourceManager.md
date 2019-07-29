@@ -84,7 +84,7 @@ In the "Terraform Actions" dropdown menu <img src="https://github.com/oci-hpc/oc
 
 ## Access your cluster
 
-Once you have created your cluster, if you gave a valid URL for the OpenFOAM sources or binaries, no other action will be needed except [running your jobs](https://github.com/oci-hpc/oci-hpc-runbook-StarCCM/blob/master/Documentation/STAR-CCM%2B.md#running-the-application).
+Once you have created your cluster, if you gave a valid URL for the OpenFOAM sources or binaries, no other action will be needed except [running your jobs](https://github.com/oci-hpc/oci-hpc-runbook-openfoam#running-the-application).
 
 Public IP addresses of the created machines can be found on the lower left menu under Outputs. 
 
