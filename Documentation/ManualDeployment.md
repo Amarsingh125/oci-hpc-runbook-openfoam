@@ -373,6 +373,7 @@ Click <img src="https://github.com/oci-hpc/oci-hpc-runbook-shared/blob/master/im
 * IP PROTOCOL: TCP
 * Source Port Range: All
 * Destination Port Range: 5900-5901
+
 Click <img src="https://github.com/oci-hpc/oci-hpc-runbook-shared/blob/master/images/addIngress.png" height="20"> 
 
 Now you should be able to VNC to the address: ip.add.re.ss:5900
@@ -491,4 +492,5 @@ Click <img src="https://github.com/oci-hpc/oci-hpc-runbook-shared/blob/master/im
 * IP PROTOCOL: TCP
 * Source Port Range: All
 * Destination Port Range: 8080
+
 Click <img src="https://github.com/oci-hpc/oci-hpc-runbook-shared/blob/master/images/addIngress.png" height="20"> 
