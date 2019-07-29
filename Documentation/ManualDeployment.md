@@ -474,3 +474,21 @@ To access paraview from a web browser, you can start a server on the GPU node:
 cd /mnt/nfs/ParaView-5.7.0-RC1-MPI-Linux-64bit
 ./bin/pvpython ./share/paraview-5.7/web/visualizer/server/pvw-visualizer.py  --content ./share/paraview-5.7/web/visualizer/www/ --data /mnt/nfs/ --port 8080
 ```
+
+The TCP port that you choose need to be open in the firewall and in the security list. 
+
+```
+sudo firewall-offline-cmd --zone=public --add-port=8080/tcp
+```
+
+Select the menu <img src="https://github.com/oci-hpc/oci-hpc-runbook-shared/blob/master/images/menu.png" height="20"> on the top left, then select Networking and Virtual Cloud Networks. <img src="https://github.com/oci-hpc/oci-hpc-runbook-shared/blob/master/images/create_vcn.png" height="20">
+
+Select the VCN that you created. Select the Subnet in which the machine reside, probably your public subnet. Select the security list. 
+
+Click <img src="https://github.com/oci-hpc/oci-hpc-runbook-shared/blob/master/images/addIngress.png" height="20">  
+
+* CIDR : 0.0.0.0/0
+* IP PROTOCOL: TCP
+* Source Port Range: All
+* Destination Port Range: 8080
+Click <img src="https://github.com/oci-hpc/oci-hpc-runbook-shared/blob/master/images/addIngress.png" height="20"> 
