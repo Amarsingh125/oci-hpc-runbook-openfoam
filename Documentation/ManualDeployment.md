@@ -381,6 +381,12 @@ Once you accessed your VNC session, you should go into Applications, then System
 
 <img src="https://github.com/oci-hpc/oci-hpc-runbook-shared/raw/master/images/CentOSSeetings.jpg" height="100"> 
 
+In the power options, set the Blank screen timeout to "Never". If you do get locked out of your user session, you can ssh to the instance and set a password for the opc user.
+
+```
+sudo passwd opc
+```
+
 # Installation
 This guide will show the different steps for the Oracle Linux 7.6 image available on Oracle Cloud Infrastructure.  
 
