@@ -27,7 +27,7 @@ Select the menu <img src="https://github.com/oci-hpc/oci-hpc-runbook-shared/blob
 
 Create a new stack: <img src="https://github.com/oci-hpc/oci-hpc-runbook-shared/blob/master/images/stack.png" height="20">
 
-Download the [ZIP file](https://github.com/oci-hpc/oci-hpc-runbook-StarCCM/raw/master/Terraform/starccm.zip) for STAR-CCM+
+Download the [ZIP file](https://github.com/oci-hpc/oci-hpc-runbook-openfoam/raw/master/Resources/openfoam_demo.zip) for OpenFOAM
 
 Add you private key to the zip file
 
