@@ -25,8 +25,73 @@ Deploying this architecture on OCI can be done in different ways.
 ## Licensing
 Since OpenFOAM is open source there are no licensing considerations for this application.
 ## Running the Application
+We will show an example on the OpenFOAM motorbike tutorial and how to tweak the default allrun file to match the architecture that we have built. 
 
+First we will move the folder from the OpenFOAM installer folder. 
+
+```
+model_drive=/mnt/block #or /mnt/nvme or /mnt/fss
+sudo mkdir $model_drive/work
+sudo chmod 775 $model_drive/work
+cp -r $FOAM_TUTORIALS/incompressible/simpleFoam/motorBike $model_drive/work
+```
+
+In this example, we are just running on 6 cores. Let's adapt this to the cluster we have built. Since creating and modifying cluster are so easy thanks to this guide, you can also make your cluster match the number of processes that you need. If you are just using the free trial, we can use 3 VM.Standard2.4 for a total of 12 cores. If your limits are higher, adapt this to however how many machines you want. 
+
+Edit the file system/decomposeParDict and change this line `numberOfSubdomains 6;` to `numberOfSubdomains 12;` or how many processes you will need. 
+Then in the hierarchicalCoeffs block, change the n from  `n   (3 2 1);` to `n   (4 3 1);`
+
+Edit the Allrun file to look like this. 
+```
+#!/bin/sh
+cd ${0%/*} || exit 1    # Run from this directory
+
+install_drive=/mnt/block #or /mnt/nvme or /mnt/fss
+# Source tutorial run functions
+. $WM_PROJECT_DIR/bin/tools/RunFunctions
+
+# Copy motorbike surface from resources directory
+cp $FOAM_TUTORIALS/resources/geometry/motorBike.obj.gz constant/triSurface/
+cp $install_drive/machinelist.txt hostfile
+runApplication surfaceFeatures
+
+runApplication blockMesh
+
+runApplication decomposePar -copyZero
+mpirun -np 12 -machinefile hostfile snappyHexMesh -overwrite > snappyHexMesh
+
+mpirun -np 12 -machinefile hostfile patchSummary -parallel > patchSummary
+mpirun -np 12 -machinefile hostfile potentialFoam -parallel > potentialFoam
+mpirun -np 12 -machinefile hostfile $(getApplication) -parallel > simpleFoam
+
+runApplication reconstructParMesh -constant
+runApplication reconstructPar -latestTime
+```
+
+Now, we are ready to go. Before any run, it is always recommanded to clean the directory using the Allclean script. 
+```
+./Allrun
+```
+
+Wathc the magic happen !
 ## Post-processing
+
+In terms of post-processing, ParaView is a really powerful opensource tool to visualize what is happening. 
+Run the commands 
+```
+./foamToVTK
+touch motorbike.foam
+```
+
+Now open paraview, on GPU instances with a GPU post processing (as in x11vnc), we'll use the latest ParaView version. If you are just a regular VNC, take version 4.4 to avoid any problem with OpenGL libraries. 
+
+Now run
+
+```
+ParaViewInstallPath/bin/paraview
+```
+
+You may have some error message popping up in the console but you can ignore those. Open the file motorbike.foam that we generated in the run folder and start playing with your model. 
 
 ## Expected Results
 
