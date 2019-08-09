@@ -75,7 +75,7 @@ Now, we are ready to go. Before any run, it is always recommanded to clean the d
 ./Allrun 12
 ```
 
-Wathc the magic happen !
+Watch the magic happen !
 ## Post-processing
 
 In terms of post-processing, ParaView is a really powerful opensource tool to visualize what is happening. 
