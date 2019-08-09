@@ -38,14 +38,14 @@ cp -r $FOAM_TUTORIALS/incompressible/simpleFoam/motorBike $model_drive/work
 
 In this example, we are just running on 6 cores. Let's adapt this to the cluster we have built. Since creating and modifying cluster are so easy thanks to this guide, you can also make your cluster match the number of processes that you need. If you are just using the free trial, we can use 3 VM.Standard2.4 for a total of 12 cores. If your limits are higher, adapt this to however how many machines you want. 
 
-Edit the file system/decomposeParDict and change this line `numberOfSubdomains 6;` to `numberOfSubdomains 12;` or how many processes you will need. 
-Then in the hierarchicalCoeffs block, change the n from  `n   (3 2 1);` to `n   (4 3 1);`
+Edit the file `system/decomposeParDict` and change this line `numberOfSubdomains 6;` to `numberOfSubdomains 12;` or how many processes you will need. 
+Then in the hierarchicalCoeffs block, change the n from  `n   (3 2 1);` to `n   (4 3 1);` If you multiply those 3 values, you should get the `numberOfSubdomains`
 
 Edit the Allrun file to look like this. 
 ```
 #!/bin/sh
 cd ${0%/*} || exit 1    # Run from this directory
-
+NP=$1
 install_drive=/mnt/block #or /mnt/nvme or /mnt/fss
 # Source tutorial run functions
 . $WM_PROJECT_DIR/bin/tools/RunFunctions
@@ -53,24 +53,26 @@ install_drive=/mnt/block #or /mnt/nvme or /mnt/fss
 # Copy motorbike surface from resources directory
 cp $FOAM_TUTORIALS/resources/geometry/motorBike.obj.gz constant/triSurface/
 cp $install_drive/machinelist.txt hostfile
+
 runApplication surfaceFeatures
 
 runApplication blockMesh
 
 runApplication decomposePar -copyZero
-mpirun -np 12 -machinefile hostfile snappyHexMesh -overwrite > snappyHexMesh
+mpirun -np $NP -machinefile hostfile snappyHexMesh -parallel > log.snappyHexMesh
 
-mpirun -np 12 -machinefile hostfile patchSummary -parallel > patchSummary
-mpirun -np 12 -machinefile hostfile potentialFoam -parallel > potentialFoam
-mpirun -np 12 -machinefile hostfile $(getApplication) -parallel > simpleFoam
+mpirun -np $NP -machinefile hostfile patchSummary -parallel > log.patchSummary
+mpirun -np $NP -machinefile hostfile potentialFoam -parallel > log.potentialFoam
+mpirun -np $NP -machinefile hostfile $(getApplication) -parallel > log.simpleFoam
 
 runApplication reconstructParMesh -constant
 runApplication reconstructPar -latestTime
 ```
 
-Now, we are ready to go. Before any run, it is always recommanded to clean the directory using the Allclean script. 
+Now, we are ready to go. Before any run, it is always recommanded to clean the directory using the Allclean script. The argument to the Allrun script is the number of processes and should match `numberOfSubdomains` in the `system/decomposeParDict` file
+
 ```
-./Allrun
+./Allrun 12
 ```
 
 Wathc the magic happen !
