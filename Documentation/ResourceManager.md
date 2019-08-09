@@ -35,7 +35,7 @@ Upload the ZIP file
 
 Choose the Name and Compartment
 
-## Add OpenFOAM binarie to Object Storage
+## Add OpenFOAM binaries to Object Storage
 
 There is a couple ways to install OpenFOAM, provide the compiled binaries or to build the sources. Building from sources is taking longer but the binaries need to be rebuilt for different platforms.
 
@@ -95,7 +95,7 @@ chmod 600 /home/user/key
 ssh -i /home/user/key opc@ipaddress
 ```
 
-Access to the GPU instances can be done through a SSH tunnel:
+Access to the GPU instances, or to the headnode can be done through a SSH tunnel:
 
 ```
 ssh -i /home/user/key -L 5902:127.0.0.1:5900 opc@ipaddress
