@@ -60,9 +60,11 @@ runApplication blockMesh
 
 runApplication decomposePar -copyZero
 runParallel snappyHexMesh -overwrite
-
+echo "Running patchsummary"
 mpirun -np $NP -machinefile hostfile patchSummary -parallel > log.patchSummary
+echo "Running potentialFoam"
 mpirun -np $NP -machinefile hostfile potentialFoam -parallel > log.potentialFoam
+echo "Running simpleFoam"
 mpirun -np $NP -machinefile hostfile $(getApplication) -parallel > log.simpleFoam
 
 runApplication reconstructParMesh -constant
