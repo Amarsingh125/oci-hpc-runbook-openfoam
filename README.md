@@ -59,7 +59,7 @@ runApplication surfaceFeatures
 runApplication blockMesh
 
 runApplication decomposePar -copyZero
-mpirun -np $NP -machinefile hostfile snappyHexMesh -parallel > log.snappyHexMesh
+runParallel snappyHexMesh -overwrite
 
 mpirun -np $NP -machinefile hostfile patchSummary -parallel > log.patchSummary
 mpirun -np $NP -machinefile hostfile potentialFoam -parallel > log.potentialFoam
