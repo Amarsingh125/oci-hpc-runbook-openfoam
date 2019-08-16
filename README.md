@@ -73,7 +73,7 @@ mpirun -np $NP -machinefile hostfile $(getApplication) -parallel > log.simpleFoa
 runApplication reconstructParMesh -constant
 runApplication reconstructPar -latestTime
 
-./foamToVTK
+foamToVTK
 touch motorbike.foam
 ```
 
@@ -89,7 +89,7 @@ Watch the magic happen !
 In terms of post-processing, ParaView is a really powerful opensource tool to visualize what is happening. 
 Run the commands 
 ```
-./foamToVTK
+foamToVTK
 touch motorbike.foam
 ```
 
