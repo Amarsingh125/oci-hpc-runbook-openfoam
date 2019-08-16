@@ -59,6 +59,7 @@ runApplication surfaceFeatures
 runApplication blockMesh
 
 runApplication decomposePar -copyZero
+echo "Running snappyHexMesh"
 mpirun -np $NP -machinefile hostfile snappyHexMesh -parallel -overwrite > log.patchSummary
 ls -d processor* | xargs -I {} rm -rf ./{}/0
 ls -d processor* | xargs -I {} cp -r 0 ./{}/0
