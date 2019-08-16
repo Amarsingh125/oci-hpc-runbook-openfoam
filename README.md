@@ -72,6 +72,9 @@ mpirun -np $NP -machinefile hostfile $(getApplication) -parallel > log.simpleFoa
 
 runApplication reconstructParMesh -constant
 runApplication reconstructPar -latestTime
+
+./foamToVTK
+touch motorbike.foam
 ```
 
 Now, we are ready to go. Before any run, it is always recommanded to clean the directory using the Allclean script. The argument to the Allrun script is the number of processes and should match `numberOfSubdomains` in the `system/decomposeParDict` file
