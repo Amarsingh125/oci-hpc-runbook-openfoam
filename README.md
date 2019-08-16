@@ -59,7 +59,9 @@ runApplication surfaceFeatures
 runApplication blockMesh
 
 runApplication decomposePar -copyZero
-runParallel snappyHexMesh -overwrite
+mpirun -np $NP -machinefile hostfile snappyHexMesh -parallel -overwrite > log.patchSummary
+ls -d processor* | xargs -I {} rm -rf ./{}/0
+ls -d processor* | xargs -I {} cp -r 0 ./{}/0
 echo "Running patchsummary"
 mpirun -np $NP -machinefile hostfile patchSummary -parallel > log.patchSummary
 echo "Running potentialFoam"
