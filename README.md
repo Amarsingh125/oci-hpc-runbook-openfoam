@@ -13,7 +13,7 @@ In addition it authenticates all of the nodes on the cluster and creates a commo
 ```
    ssh {username}\@{bm-public-ip-address}
 ```
-Four different types of file storage are created alongside the cluster. One NFS file share is created from the head node's OS disk and shared with all of the compute nodes, /mnt/nfsshare, another share is created on the temp disk of the head node, /mnt/scratch. The temp disk is a physically attached disk and will typically provide faster performance on each of the nodes.
+Four different types of file storage are created alongside the cluster. One NFS file share is created from the head node's OS disk and shared with all of the compute nodes, another share is created on the temp disk of the head node, /mnt/scratch. The temp disk is a physically attached disk and will typically provide faster performance on each of the nodes.
 ![](https://github.com/oci-hpc/oci-hpc-runbook-openfoam/blob/master/images/HPC_arch_draft.png "Architecture for running OpenFOAM in OCI")
 ## Deployment
 
