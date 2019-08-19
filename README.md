@@ -9,7 +9,7 @@ OpenFOAM is the free, open source CFD software released and developed primarily 
 <img align="middle" src="https://github.com/oci-hpc/oci-hpc-runbook-openfoam/blob/master/images/sim.gif" height="180" >
 
 ## Architecture
-In addition it authenticates all of the nodes on the cluster and creates a common share directory to be used for each of the nodes. A bastion host is created and a cluster of BM.HPC2.36 instances. A public IP is assigned to the network with port 22 open. The Jumpbox can be accessed with the following command:
+In addition it authenticates all of the nodes on the cluster and creates a common share directory to be used for each of the nodes. A bastion host is created and a cluster of instances. A public IP is assigned to the network with port 22 open. The Jumpbox can be accessed with the following command:
 ```
    ssh {username}\@{bm-public-ip-address}
 ```
