@@ -103,5 +103,3 @@ ParaViewInstallPath/bin/paraview
 
 You may have some error message popping up in the console but you can ignore those. Open the file motorbike.foam that we generated in the run folder and start playing with your model. 
 
-## Expected Results
-
