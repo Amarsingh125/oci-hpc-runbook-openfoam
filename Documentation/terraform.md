@@ -29,7 +29,7 @@ To check that the installation was done correctly: `terraform -version` should r
 ## Using terraform
 ### Configure
 Download the zip file and unzip the content:
-* [Cluster](https://github.com/oci-hpc/oci-hpc-runbook-StarCCM/blob/master/Terraform/tf_starccm.zip)
+* [Cluster](https://github.com/oci-hpc/oci-hpc-runbook-openfoam/blob/master/Resources/tf_AMD_cluster.zip?raw=true)
 
 Edit the file terraform.tfvars for your settings, info can be found [on the terraform website](https://www.terraform.io/docs/providers/oci/index.html#authentication)
 
