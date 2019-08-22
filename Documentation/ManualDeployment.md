@@ -458,7 +458,8 @@ cd /mnt/nfs/OpenFOAM-7
 
 ## Paraview
 
-Select an installation directory. The Network File System is probably a good place to put it. 
+### GPU rendering
+Select an installation directory. The Network File System is probably a good place to put it. If you are using GPUs along with x11vnc, Paraview runs on the GPU and the NVIDIA driver are being used. 
 
 ```
 sudo yum install -y mesa-libGLU
@@ -466,8 +467,6 @@ cd /mnt/nfs/
 curl -d submit="Download" -d version="v5.7" -d type="binary" -d os="Linux" -d downloadFile="ParaView-5.7.0-RC1-MPI-Linux-64bit.tar.gz" https://www.paraview.org/paraview-downloads/download.php > file.tar.gz
 tar -xf file.tar.gz
 ```
-
-Since x11vnc is used, paraview runs on the GPU and the NVIDIA driver are being used. 
 
 To access paraview from a web browser, you can start a server on the GPU node: 
 
@@ -494,3 +493,19 @@ Click <img src="https://github.com/oci-hpc/oci-hpc-runbook-shared/blob/master/im
 * Destination Port Range: 8080
 
 Click <img src="https://github.com/oci-hpc/oci-hpc-runbook-shared/blob/master/images/addIngress.png" height="20"> 
+
+### CPU rendering
+
+Select an installation directory. The Network File System is probably a good place to put it. If you are using CPUs, we advise to use an older version of Paraview to avoid conflict with OpenGL. 
+
+```
+sudo yum install -y mesa-libGLU
+cd /mnt/nfs/
+curl -d submit="Download" -d version="v4.4" -d type="binary" -d os="Linux" -d downloadFile="ParaView-4.4.0-Qt4-Linux-64bit.tar.gz" https://www.paraview.org/paraview-downloads/download.php > file.tar.gz
+tar -xf file.tar.gz
+```
+
+Start Paraview from a VNC session like this:
+```
+/mnt/nfs/ParaView-4.4.0-Qt4-Linux-64bit/bin/paraview
+```
