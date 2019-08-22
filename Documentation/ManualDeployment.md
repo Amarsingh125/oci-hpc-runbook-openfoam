@@ -314,8 +314,6 @@ sudo mkdir /mnt/share
 sudo mount 10.0.0.2:/mnt/share /mnt/share
 ```
 
-## Paraview
-
 ## Setting up X11VNC
 If you used terraform to create the cluster, this step has been done already for the GPU instance.
 
