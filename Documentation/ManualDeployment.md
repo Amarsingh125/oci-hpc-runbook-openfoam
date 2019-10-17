@@ -457,14 +457,14 @@ Select an installation directory. The Network File System is probably a good pla
 ```
 sudo yum install -y mesa-libGLU
 cd /mnt/nfs/
-curl -d submit="Download" -d version="v5.7" -d type="binary" -d os="Linux" -d downloadFile="ParaView-5.7.0-RC1-MPI-Linux-64bit.tar.gz" https://www.paraview.org/paraview-downloads/download.php > file.tar.gz
+curl -d submit="Download" -d version="v5.7" -d type="binary" -d os="Linux" -d downloadFile="ParaView-5.7.0-MPI-Linux-Python2.7-64bit.tar.gz" https://www.paraview.org/paraview-downloads/download.php > file.tar.gz
 tar -xf file.tar.gz
 ```
 
 To access paraview from a web browser, you can start a server on the GPU node: 
 
 ```
-cd /mnt/nfs/ParaView-5.7.0-RC1-MPI-Linux-64bit
+cd /mnt/nfs/ParaView-5.7.0-MPI-Linux-Python2.7-64bit
 ./bin/pvpython ./share/paraview-5.7/web/visualizer/server/pvw-visualizer.py  --content ./share/paraview-5.7/web/visualizer/www/ --data /mnt/nfs/ --port 8080
 ```
 
