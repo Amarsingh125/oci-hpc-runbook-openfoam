@@ -327,7 +327,7 @@ sudo systemctl isolate multi-user.target
 sudo systemctl isolate graphical.target
 sudo mkdir /home/opc/.vnc/
 sudo chown opc:opc /home/opc/.vnc
-echo "password" | vncpasswd -f > /home/opc/.vnc/passwd
+echo "HPC_oci1" | vncpasswd -f > /home/opc/.vnc/passwd
 chown opc:opc /home/opc/.vnc/passwd
 chmod 600 /home/opc/.vnc/passwd
 sudo x11vnc -rfbauth ~/.vnc/passwd  -auth /var/lib/gdm/:0.Xauth -display :0 -forever -bg -repeat -nowf -o ~/.vnc/x11vnc.log
