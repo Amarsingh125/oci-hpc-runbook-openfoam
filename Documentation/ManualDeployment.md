@@ -427,6 +427,7 @@ done
 
 ## OpenFOAM
 
+### HeadNode
 If you have the correct binaries of your OpenFOAM version. Just untar it and you are ready to go. 
 
 If you want to install from sources, modify the path to the tarballs in the next commands. This example has the foundation OpenFOAM sources. OpenFOAM from ESI has also been tested. To share the installation between the different compute nodes, install on the network file system.   
@@ -447,6 +448,21 @@ sudo ln -s /usr/lib64/libboost_thread-mt.so /usr/lib64/libboost_thread.so
 source ~/.bashrc
 cd /mnt/nfs/OpenFOAM-7
 ./Allwmake -j
+```
+
+### ComputeNode
+You just need mpi on the compute node. 
+
+
+```
+sudo yum -y install openmpi openmpi-devel
+cd /mnt/nfs
+export PATH=/usr/lib64/openmpi/bin/:/usr/lib64/qt5/bin/:$PATH
+echo export PATH=/usr/lib64/openmpi/bin/:\$PATH | sudo tee -a ~/.bashrc
+echo export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib/:\$LD_LIBRARY_PATH | sudo tee -a ~/.bashrc
+echo source /mnt/nfs/OpenFOAM-7/etc/bashrc | sudo tee -a ~/.bashrc
+sudo ln -s /usr/lib64/libboost_thread-mt.so /usr/lib64/libboost_thread.so
+source ~/.bashrc
 ```
 
 ## Paraview
