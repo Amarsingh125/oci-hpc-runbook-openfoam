@@ -313,6 +313,26 @@ sudo yum -y install nfs-utils
 sudo mkdir /mnt/share
 sudo mount 10.0.0.2:/mnt/share /mnt/share
 ```
+## Setting up VNC
+If you used terraform to create the cluster, this step has been done already for the GPU instance.
+
+By default, the only access to the Oracle Linux machine is through SSH in a console mode. If you want to see the graphical interface, you will need to set up a VNC connection. The following script will work for the default user opc. The password for the vnc session is set as "password" but it can be edited in the next commands.
+
+```
+sudo yum -y groupinstall 'Server with GUI'
+sudo yum -y install tigervnc-server mesa-libGL
+sudo systemctl set-default graphical.target
+sudo cp /usr/lib/systemd/system/vncserver@.service /etc/systemd/system/vncserver@:0.service
+sudo sed -i 's/<USER>/opc/g' /etc/systemd/system/vncserver@:0.service
+sudo mkdir /home/opc/.vnc/
+sudo chown opc:opc /home/opc/.vnc
+echo "HPC_oci1" | vncpasswd -f > /home/opc/.vnc/passwd
+chown opc:opc /home/opc/.vnc/passwd
+chmod 600 /home/opc/.vnc/passwd
+sudo systemctl start vncserver@:0.service
+sudo systemctl enable vncserver@:0.service
+```
+
 
 ## Setting up X11VNC
 If you used terraform to create the cluster, this step has been done already for the GPU instance.
@@ -330,6 +350,7 @@ sudo chown opc:opc /home/opc/.vnc
 echo "HPC_oci1" | vncpasswd -f > /home/opc/.vnc/passwd
 chown opc:opc /home/opc/.vnc/passwd
 chmod 600 /home/opc/.vnc/passwd
+sudo x11vnc -rfbauth ~/.vnc/passwd  -auth /var/lib/gdm/:0.Xauth -display :0 -forever -bg -repeat -nowf -o ~/.vnc/x11vnc.log
 sudo x11vnc -rfbauth ~/.vnc/passwd  -auth /var/lib/gdm/:0.Xauth -display :0 -forever -bg -repeat -nowf -o ~/.vnc/x11vnc.log
 ```
 
