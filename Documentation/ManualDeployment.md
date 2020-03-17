@@ -20,6 +20,7 @@
     - [Compute Nodes](#compute-nodes)
   - [Allow communication between machines](#allow-communication-between-machines)
   - [Adding a GPU Node for pre/post processing](#adding-a-gpu-node-for-prepost-processing)
+  - [Setting up VNC](#setting-up-vnc)
   - [Setting up X11VNC](#setting-up-x11vnc)
   - [Accessing a VNC](#accessing-a-vnc)
 - [Installation](#installation)
