@@ -252,7 +252,7 @@ There will already be a Primary VNIC, click on the three dots at the end of the 
 Uncheck "Skip Source/Destination Check" if it is checked and click <img src="https://github.com/oci-hpc/oci-hpc-runbook-shared/blob/master/images/updateVNIC.png" height="20">
 
 ## Mounting a drive
- Only if using powerful nodes that require the fastest storage available (not VM.Standard2.1)
+ ** Only if the node shape has a NVMe attached (BM.HPC2.36 has one, not VM.Standard2.1) **
 
 HPC machines have local NVMe storage but it is not mounted by default. Let's take care of that! 
 
