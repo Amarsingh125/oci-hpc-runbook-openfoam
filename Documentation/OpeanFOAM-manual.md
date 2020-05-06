@@ -39,7 +39,7 @@
     - [CPU rendering](#cpu-rendering)
   - [Setting up VNC](#setting-up-vnc)
   - [Accessing a VNC](#accessing-a-vnc)
-  - [Running the application](#running-the-application)
+  - [Running OpenFOAM and Paraview](#running-openfoam-and-paraview)
 - [TODO- CORRECT CONFIGURATION FOR VM 2.1](#todo--correct-configuration-for-vm-21)
 
 ## Prerequisites
@@ -528,7 +528,34 @@ You can chose a VNC client that you prefer or use this guide to install on your 
 [Windows - TigerVNC](https://github.com/TigerVNC/tigervnc/wiki/Setup-TigerVNC-server-%28Windows%29)
 [MacOS/Windows - RealVNC](https://www.realvnc.com/en/connect/download/)
 
-## Running the application
+## Running OpenFOAM
+
+Let's now run an example: 
+
+Grab a tutorial model from [here](https://objectstorage.us-phoenix-1.oraclecloud.com/p/V7-M6bL-HWGKNLiZ2iCiKdG3ehzs3nkjwX6_zDNEbSM/n/hpc/b/HPC_BENCHMARKS/o/motorbike_RDMA.tgz). 
+
+```
+cd /mnt/share
+mkdir /mnt/share/work
+cd /mnt/share/work
+wget https://objectstorage.us-phoenix-1.oraclecloud.com/p/V7-M6bL-HWGKNLiZ2iCiKdG3ehzs3nkjwX6_zDNEbSM/n/hpc/b/HPC_BENCHMARKS/o/motorbike_RDMA.tgz
+tar -xf motorbike_RDMA.tgz
+```
+
+In the Allrun file, we reference the machinefile as hostfile in the current directory. 
+
+```
+cp /mnt/share/machinelist.txt hostfile
+```
+
+Launch Allrun with the number of cores that you need (More than 1). 
+
+```
+./Allrun 2
+```
+
+
+## Running Paraview
 
 Once you are logged in through VNC, start a terminal window and run paraview:
 
