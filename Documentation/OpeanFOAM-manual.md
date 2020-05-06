@@ -39,7 +39,8 @@
     - [CPU rendering](#cpu-rendering)
   - [Setting up VNC](#setting-up-vnc)
   - [Accessing a VNC](#accessing-a-vnc)
-  - [Running OpenFOAM and Paraview](#running-openfoam-and-paraview)
+  - [Running OpenFOAM](#running-openfoam)
+  - [Running Paraview](#running-paraview)
 - [TODO- CORRECT CONFIGURATION FOR VM 2.1](#todo--correct-configuration-for-vm-21)
 
 ## Prerequisites
