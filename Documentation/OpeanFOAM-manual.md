@@ -153,7 +153,7 @@ Click on <img src="https://github.com/oci-hpc/oci-hpc-runbook-shared/raw/master/
 
 Choose the following settings:
 
-# Public
+#### Public
 * Name : (example: openfoam_public_subnet)
 * Subnet Type: Regional
 * CIDR Block: 10.0.0.0/24
@@ -161,7 +161,7 @@ Choose the following settings:
 * Subnet Access: Public Subnet
 * Security List: Select "Default Security List..."
 
-# Private
+#### Private
 * Name : (example: openfoam_private_subnet)
 * Subnet Type: Regional
 * CIDR Block: 10.0.3.0/24
@@ -206,7 +206,7 @@ On the next page, click <img src="https://github.com/oci-hpc/oci-hpc-runbook-sha
 
 On the creation page, select the following:
 
-# Headnode
+#### Headnode
 * Name of your instance (example: openfoam_head)
 * Image or operating system: latest version Oracle Linux (default).
 * Availibility Domain: Any domain will suffice for VM.Standard2.1 shapes
@@ -227,7 +227,7 @@ With that file created, run `cat ~/.ssh/id_rsa.pub`, which will output the conte
 
 Since the worker nodes are in a private subnet we will not be able to communicate with them directly through the public internet. 
 
-# Worker
+#### Worker
 * Name of your instance (example: openfoam_worker_0)
 * Image or operating system: latest version Oracle Linux (default).
 * Availibility Domain: Any domain will suffice for VM.Standard2.1 shapes
@@ -243,7 +243,7 @@ Click <img src="https://github.com/oci-hpc/oci-hpc-runbook-shared/blob/master/im
 Return to the console logged in to the head node, and when the instance turns green, take the private IP address and try to use ssh to log in to the instance from the head node `ssh opc@10.x.x.x`
 
 ## NAT Gateway setup
-# Worker nodes only
+### Worker nodes only
 
 For a worker node to be able to access the NAT Gateway, select the worker node and in the Resources menu on the left, click on Attached VNICs. 
 
@@ -252,7 +252,7 @@ There will already be a Primary VNIC, click on the three dots at the end of the 
 Uncheck "Skip Source/Destination Check" if it is checked and click <img src="https://github.com/oci-hpc/oci-hpc-runbook-shared/blob/master/images/updateVNIC.png" height="20">
 
 ## Mounting a drive
-# Only if using powerful nodes that require the fastest storage available (not VM.Standard2.1)
+ Only if using powerful nodes that require the fastest storage available (not VM.Standard2.1)
 
 HPC machines have local NVMe storage but it is not mounted by default. Let's take care of that! 
 
@@ -550,6 +550,7 @@ cd /mnt/share/work/motorBike/system
 ```
 
 # TODO- CORRECT CONFIGURATION FOR VM 2.1
+
 Edit the file system/decomposeParDict and change this line numberOfSubdomains 6; to numberOfSubdomains 12; or how many processes you will need. Then in the hierarchicalCoeffs block, change the n from n (3 2 1); to n (4 3 1); If you multiply those 3 values, you should get the numberOfSubdomains
 
 
