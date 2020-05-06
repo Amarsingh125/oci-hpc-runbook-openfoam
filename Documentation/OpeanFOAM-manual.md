@@ -528,6 +528,9 @@ You can chose a VNC client that you prefer or use this guide to install on your 
 [Windows - TigerVNC](https://github.com/TigerVNC/tigervnc/wiki/Setup-TigerVNC-server-%28Windows%29)
 [MacOS/Windows - RealVNC](https://www.realvnc.com/en/connect/download/)
 
+
+# TODO- CORRECT CONFIGURATION FOR VM 2.1
+
 ## Running OpenFOAM
 
 Let's now run an example: 
@@ -564,60 +567,6 @@ Start Paraview from a VNC session like this:
 /mnt/share/ParaView-4.4.0-Qt4-Linux-64bit/bin/paraview
 ```
 
-We will show an example on the OpenFOAM motorbike tutorial and how to tweak the default allrun file to match the architecture that we have built.
 
-First we will move the folder from the OpenFOAM installer folder.
-
-```
-model_drive=/mnt/share
-sudo mkdir $model_drive/work
-sudo chmod 777 $model_drive/work
-cp -r $FOAM_TUTORIALS/incompressible/simpleFoam/motorBike $model_drive/work
-cd /mnt/share/work/motorBike/system
-```
-
-# TODO- CORRECT CONFIGURATION FOR VM 2.1
-
-Edit the file system/decomposeParDict and change this line numberOfSubdomains 6; to numberOfSubdomains 12; or how many processes you will need. Then in the hierarchicalCoeffs block, change the n from n (3 2 1); to n (4 3 1); If you multiply those 3 values, you should get the numberOfSubdomains
-
-
-Next edit the Allrun file in /mnt/share/work/motorBike to look like this:
-
-```
-#!/bin/sh
-cd ${0%/*} || exit 1    # Run from this directory
-NP=$1
-install_drive=/mnt/share
-# Source tutorial run functions
-. $WM_PROJECT_DIR/bin/tools/RunFunctions
-
-# Copy motorbike surface from resources directory
-cp $FOAM_TUTORIALS/resources/geometry/motorBike.obj.gz constant/triSurface/
-cp $install_drive/machinelist.txt hostfile
-
-runApplication surfaceFeatures
-
-runApplication blockMesh
-
-runApplication decomposePar -copyZero
-echo "Running snappyHexMesh"
-mpirun -np $NP -machinefile hostfile snappyHexMesh -parallel -overwrite > log.snappyHexMesh
-ls -d processor* | xargs -I {} rm -rf ./{}/0
-ls -d processor* | xargs -I {} cp -r 0 ./{}/0
-echo "Running patchsummary"
-mpirun -np $NP -machinefile hostfile patchSummary -parallel > log.patchSummary
-echo "Running potentialFoam"
-mpirun -np $NP -machinefile hostfile potentialFoam -parallel > log.potentialFoam
-echo "Running simpleFoam"
-mpirun -np $NP -machinefile hostfile $(getApplication) -parallel > log.simpleFoam
-
-runApplication reconstructParMesh -constant
-runApplication reconstructPar -latestTime
-
-foamToVTK
-touch motorbike.foam
-```
-
-Execute the run by running Allrun 2 in the motorBike directory
 Once that has completed, return to Paraview and open the motorbike.foam file using File > open and navigating to the motorBike folder.
 You can load the model and take a look at the results from the simulation in 3D space.
