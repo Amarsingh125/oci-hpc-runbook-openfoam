@@ -1,12 +1,11 @@
+# <img src="https://github.com/oci-hpc/oci-hpc-runbook-openfoam/blob/master/images/openfoam.png" height="80"> Runbook
 
+## Introduction
+This runbook is designed to assist in the assessment of the OpenFOAM CFD Software in Oracle Cloud Infrastructure. It automatically downloads and configures OpenFOAM. 
+OpenFOAM is the free, open source CFD software released and developed primarily by OpenCFD Ltd since 2004. It has a large user base across most areas of engineering and science, from both commercial and academic organisations. OpenFOAM has an extensive range of features to solve anything from complex fluid flows involving chemical reactions, turbulence and heat transfer, to acoustics, solid mechanics and electromagnetics.
+
+<img align="middle" src="https://github.com/oci-hpc/oci-hpc-runbook-openfoam/blob/master/images/sim.gif" height="180" >
  
-## Deployment
-
-Deploying this architecture on OCI can be done in different ways.
-* The [resource Manager](https://github.com/oci-hpc/oci-hpc-runbook-openfoam/blob/master/Documentation/ResourceManager.md#deployment-through-resource-manager) let you deploy the infrastructure 
-* The [web console](https://github.com/oci-hpc/oci-hpc-runbook-openfoam/blob/master/Documentation/ManualDeployment.md#deployment-via-web-console) let you create each piece of the architecture one by one from a webbrowser. This can be used to avoid any terraform scripting or using existing templates. 
- 
-
 
 **Table of Contents**
 - [Introduction](#introduction)
@@ -21,19 +20,13 @@ Deploying this architecture on OCI can be done in different ways.
   - [Setting Up a VNC on your bastion](#setting-up-a-vnc-on-your-bastion)
   - [Add a GPU instance](#add-a-gpu-instance)
 - [Accessing a VNC](#accessing-a-vnc)
-- [Installing Star-CCM+](#installing-star-ccm)
+- [Installing OpenFOAM](#installing-openfoam)
   - [Adding specific librairies](#adding-specific-librairies)
   - [Download the binaries](#download-the-binaries)
   - [Install](#install)
-- [Running Star-CCM+](#running-star-ccm)
+- [Running OpenFOAM](#running-openfoam)
   - [MPI Implementations and RDMA](#mpi-implementations-and-rdma)
     - [OpenMPI](#openmpi)
-    - [IntelMPI](#intelmpi)
-    - [PlatformMPI](#platformmpi)
-- [Benchmark Example](#benchmark-example)
-  - [17 Millions Cells](#17-millions-cells)
-  - [105 Millions Cells](#105-millions-cells)
-
 
 
 ## Baseline Infrastructure
@@ -82,7 +75,7 @@ We suggest launching the [CFD Ready Cluster](https://cloudmarketplace.oracle.com
     1.	Select the desired **AD** for the compute shapes and the bastion.
     2.	Copy-paste your public **ssh key**
     3.	Type in the number of **Compute instances** for the cluster
-    4. Uncheck Install OpenFOAM
+    4. Leave Install OpenFOAM checked
     5. If you need more than 6TB of Shared disk space, check GlusterFS and select how many servers you would need. (6TB per server)
 5.	Click **Create**.
 6.	Navigate to *Terraform Actions* then click **Apply**. This will launch the CN provisioning.
@@ -228,9 +221,6 @@ sudo firewall-cmd --reload
 ```
 15.	Open TurboVNC or TigerVNC client. Enter the IP address connection as <public ip>:1
 
-
-
-
 # Accessing a VNC
 We will connect through an SSH tunnel to the instance. On your machine, connect using ssh
 PORT below will be the number that results from 5900 + N. N is the display number, if the output for N was 1, PORT is 5901, if the output was 9, PORT is 5909
@@ -244,70 +234,75 @@ You can chose a VNC client that you prefer or use this guide to install on your 
 *	[Windows - TigerVNC](https://github.com/TigerVNC/tigervnc/wiki/Setup-TigerVNC-server-%28Windows%29) 
 *	[MacOS/Windows - RealVNC](https://www.realvnc.com/en/connect/download/)
 
-# Installing STAR-CCM+
-
-## Adding specific librairies
+# Installing OpenFOAM
 ***If you used the CFD Ready Cluster from marketplace, this step is not needed.***
 
-There are a couple of library that need to be added to the Oracle Linux image on all the compute nodes.
-```
-sudo yum -y install libSM libX11 libXext libXt
-```
-## Download the binaries
-You can download the STAR-CCM+ installer from the Siemens PLM website or push it to your machine using scp. 
-```
-scp /path/own/machine/STAR-CCM_version.zip opc@1.1.1.1:/home/opc/
-```
-Another possibility is to upload the installer into object storage. 
-1.	In the main menu of the console, select Object Storage. 
-2.	Choose the correct region on the top right
-3.	Select the correct compartment on the left-hand side
-4.	Create a bucket if you do not have one already created
-5.	In the bucket, select upload object and specify the path of the installer. 
-6.	Select the 3 dots on the right-hand side of the installer object and select Create Pre-Authenticated Request
-7.	If you lose the URL, you cannot get it back, but you can regenerate a new Pre-Authenticated Request
+This guide will show the different steps for the Oracle Linux 7.6 image available on Oracle Cloud Infrastructure.  
 
-Download the installer form object storage with
+
+## Create a machinefile
+
+If you used terraform to create the cluster, this step has been done already. 
+OpenFOAM on the headnode does not automatically know which compute nodes are available. You can create a machinefile at `/mnt/nfs-share/install/machinefile.txt` with the private IP address of all the nodes along with the number of CPUs available. 
+
 ```
-wget PAR_URL
-```
-Untar or unzip the installer depending on your version
-```
-tar -xf installer.tgz
-unzip installer.tgz
-```
-## Install
-Launch the installer on a shared location. By default, an HPC cluster has a NFS-share mounted on all the compute nodes. 
-```
-mkdir /mnt/nfs-share/install
-/path/installscript.sh -i silent -DINSTALLDIR=/mnt/nfs-share/install/
+10.0.0.2 cpu=36
+10.0.3.2 cpu=36
+10.0.3.3 cpu=36
+privateIP cpu=cores_available
+...
 ```
 
-# Running STAR-CCM+
-Running Star-CCM+ is pretty straightforward: You can either start the GUI if you have a VNC session started with
-```
-/mnt/share/install/version/STAR-CCM+version/star/bin/starccm+
-```
-To specify the host you need to run on, you need to create a machinefile. You can generate it as follow, or manually. Format is hostname:corenumber.
-```
-sed 's/$/:36/' /etc/opt/oci-hpc/hostfile > machinefile
-```
-To run on multiple nodes, place the model.sim on the nfs-share drive (Ex:/mnt/nfs-share/work/) and replace the CORENUMBER and PODKEY.
-```
-/mnt/nfs-share/install/15.02.009/STAR-CCM+15.02.009/star/bin/starccm+ -batch -power\\ 
--licpath 1999@flex.cd-adapco.com -podkey PODKEY -np CORENUMBER 
--machinefile machinefile /mnt/nfs-share/work/model.sim
-```
-## MPI implementations and RDMA
-Performances can really differ depending on the MPI that you are using. 3 are supported by Star-CCM+ out of the box.
- *	IBM Platform MPI: Default or flag platform
- *	Open MPI: Flag intel
- *	Intel MPI: Flag openmpi3
-To specify options, you can use the flag -mppflags
-When using OCI RDMA on a Cluster Network, you will need to specify these options:
+## OpenFOAM
 
-### OpenMPI
-For RDMA:
+### HeadNode
+You can download a precompiled version of OpenFOAM for Oracle Linux 7 [here](https://objectstorage.us-phoenix-1.oraclecloud.com/p/f48lM3aXtcEiCGJihz-sxpH808zie7VEbBHbihuZ2YI/n/hpc/b/HPC_APPS/o/openfoam7_OL77_RDMA.tar)
+Just untar it and you are ready to go. 
+
+If you want to install from sources, modify the path to the tarballs in the next commands. This example has the foundation OpenFOAM sources. OpenFOAM from ESI has also been tested. To share the installation between the different compute nodes, install on the network file system.   
+
+```
+sudo yum groupinstall -y 'Development Tools'
+sudo yum -y install devtoolset-8 gcc-c++ zlib-devel
+sudo mkdir /mnt/nfs-share/install
+sudo chown opc:opc /mnt/nfs-share/install 
+cd /mnt/nfs-share/install
+wget -O - http://dl.openfoam.org/source/7 | tar xvz
+wget -O - http://dl.openfoam.org/third-party/7 | tar xvz
+mv OpenFOAM-7-version-7 OpenFOAM-7
+mv ThirdParty-7-version-7 ThirdParty-7
+export PATH=/usr/mpi/gcc/openmpi-3.1.1rc1/bin/:/usr/lib64/qt5/bin/:$PATH
+echo export PATH=/usr/mpi/gcc/openmpi-3.1.1rc1/bin/:\$PATH | sudo tee -a ~/.bashrc
+echo export LD_LIBRARY_PATH=/usr/mpi/gcc/openmpi-3.1.1rc1/lib64/:\$LD_LIBRARY_PATH | sudo tee -a ~/.bashrc
+echo source /mnt/nfs-share/install/OpenFOAM-7/etc/bashrc | sudo tee -a ~/.bashrc
+sudo ln -s /usr/lib64/libboost_thread-mt.so /usr/lib64/libboost_thread.so
+source ~/.bashrc
+cd /mnt/nfs-share/install/OpenFOAM-7
+./Allwmake -j
+```
+
+### ComputeNode
+You just need to update the `~/.bashrc` on the compute nodes. 
+
+```
+echo export PATH=/usr/mpi/gcc/openmpi-3.1.1rc1/bin/:\$PATH | sudo tee -a ~/.bashrc
+echo export LD_LIBRARY_PATH=/usr/mpi/gcc/openmpi-3.1.1rc1/lib64/:\$LD_LIBRARY_PATH | sudo tee -a ~/.bashrc
+echo source /mnt/nfs/OpenFOAM-7/etc/bashrc | sudo tee -a ~/.bashrc
+```
+
+
+# Running OpenFOAM
+Running OpenFOAM is not so straightforward if you are not familiar with the tool. Using this [script](https://objectstorage.us-phoenix-1.oraclecloud.com/p/V7-M6bL-HWGKNLiZ2iCiKdG3ehzs3nkjwX6_zDNEbSM/n/hpc/b/HPC_BENCHMARKS/o/motorbike_RDMA.tgz), you can do it very easily. 
+
+In the following commands, replace NP by the number of total processes to run the model on. The maximum number is 36 * Number of nodes
+
+```
+tar -xf motorbike_RDMA.tgz
+./Allrun 72
+```
+
+If you are running your own model with your own script, here are the flags that you need to run on RDMA.  
+
 ```
 -mca btl self -x UCX_TLS=rc,self,sm -x HCOLL_ENABLE_MCAST_ALL=0 -mca coll_hcoll_enable 0 -x UCX_IB_TRAFFIC_CLASS=105 -x UCX_IB_GID_INDEX=3 
 ```
