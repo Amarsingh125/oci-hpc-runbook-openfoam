@@ -294,11 +294,11 @@ echo source /mnt/nfs/OpenFOAM-7/etc/bashrc | sudo tee -a ~/.bashrc
 # Running OpenFOAM
 Running OpenFOAM is not so straightforward if you are not familiar with the tool. Using this [script](https://objectstorage.us-phoenix-1.oraclecloud.com/p/V7-M6bL-HWGKNLiZ2iCiKdG3ehzs3nkjwX6_zDNEbSM/n/hpc/b/HPC_BENCHMARKS/o/motorbike_RDMA.tgz), you can do it very easily. 
 
-In the following commands, replace NP by the number of total processes to run the model on. The maximum number is 36 * Number of nodes
+In the following commands, replace `NP` by the number of total processes to run the model on. The maximum number is 36 * Number of nodes in your cluster
 
 ```
 tar -xf motorbike_RDMA.tgz
-./Allrun 72
+./Allrun NP
 ```
 
 If you are running your own model with your own script, here are the flags that you need to run on RDMA.  
