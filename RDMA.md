@@ -21,12 +21,10 @@ OpenFOAM is the free, open source CFD software released and developed primarily 
   - [Add a GPU instance](#add-a-gpu-instance)
 - [Accessing a VNC](#accessing-a-vnc)
 - [Installing OpenFOAM](#installing-openfoam)
-  - [Adding specific librairies](#adding-specific-librairies)
-  - [Download the binaries](#download-the-binaries)
+  - [Create a Machinefile](#create-a-machinefile)
   - [Install](#install)
+  - [Compute Nodes](#compute-nodes)
 - [Running OpenFOAM](#running-openfoam)
-  - [MPI Implementations and RDMA](#mpi-implementations-and-rdma)
-    - [OpenMPI](#openmpi)
 
 
 ## Baseline Infrastructure
@@ -240,6 +238,8 @@ You can chose a VNC client that you prefer or use this guide to install on your 
 This guide will show the different steps for the Oracle Linux 7.6 image available on Oracle Cloud Infrastructure.  
 
 
+
+
 ## Create a machinefile
 
 If you used terraform to create the cluster, this step has been done already. 
@@ -253,9 +253,7 @@ privateIP cpu=cores_available
 ...
 ```
 
-## OpenFOAM
-
-### HeadNode
+## Install
 You can download a precompiled version of OpenFOAM for Oracle Linux 7 [here](https://objectstorage.us-phoenix-1.oraclecloud.com/p/f48lM3aXtcEiCGJihz-sxpH808zie7VEbBHbihuZ2YI/n/hpc/b/HPC_APPS/o/openfoam7_OL77_RDMA.tar)
 Just untar it and you are ready to go. 
 
@@ -281,7 +279,7 @@ cd /mnt/nfs-share/install/OpenFOAM-7
 ./Allwmake -j
 ```
 
-### ComputeNode
+## Compute Nodes
 You just need to update the `~/.bashrc` on the compute nodes. 
 
 ```
