@@ -101,7 +101,7 @@ Marketplace holds applications and images that can be deployed with our infrastr
 17.	SCP the key to the cluster on the bastion at /home/opc/.ssh/cluster_key and copy it also to /home/opc/.ssh/id_rsa
 19.	Install the Provisioning Tool on the bastion via the following command:
 ```
-sudo rpm -Uvh https://objectstorage.us-ashburn-1.oraclecloud.com/n/hpc/b/rpms/o/oci-hpc-provision-20190905-63.7.2.x86_64.rpm
+sudo rpm -Uvh https://objectstorage.us-ashburn-1.oraclecloud.com/p/5R0v9HXBjdlN3H1m1LkoOQo1zVmq8MoSuz6vPb6-ztg/n/hpc/b/rpms/o/common/oci-hpc-provision-20190905-63.7.2.x86_64.rpm
 ```
 18.	Navigate to **Compute** then **Instance Pools** in the Console and collect all the IP addresses for the cluster network pool. Or use this command on the bastion if you have nothing else running on your private subnet. 
 ```
