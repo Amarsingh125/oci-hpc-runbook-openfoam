@@ -290,7 +290,7 @@ echo source /mnt/nfs/OpenFOAM-7/etc/bashrc | sudo tee -a ~/.bashrc
 
 
 # Running OpenFOAM
-Running OpenFOAM is not so straightforward if you are not familiar with the tool. Using this [script](https://objectstorage.us-phoenix-1.oraclecloud.com/p/V7-M6bL-HWGKNLiZ2iCiKdG3ehzs3nkjwX6_zDNEbSM/n/hpc/b/HPC_BENCHMARKS/o/motorbike_RDMA.tgz), you can do it very easily. 
+Running OpenFOAM is not so straightforward if you are not familiar with the tool. Using this [script](https://objectstorage.us-phoenix-1.oraclecloud.com/p/V7-M6bL-HWGKNLiZ2iCiKdG3ehzs3nkjwX6_zDNEbSM/n/hpc/b/HPC_BENCHMARKS/o/motorbike_RDMA.tgz), you can do it very easily. This needs to be run on one of the compute nodes (Not the headnode)
 
 In the following commands, replace `NP` by the number of total processes to run the model on. The maximum number is 36 * Number of nodes in your cluster
 
