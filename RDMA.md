@@ -257,7 +257,7 @@ privateIP cpu=cores_available
 You can download a precompiled version of OpenFOAM for Oracle Linux 7 [here](https://objectstorage.us-phoenix-1.oraclecloud.com/p/f48lM3aXtcEiCGJihz-sxpH808zie7VEbBHbihuZ2YI/n/hpc/b/HPC_APPS/o/openfoam7_OL77_RDMA.tar)
 Just untar it and you are ready to go. 
 
-If you want to install from sources, modify the path to the tarballs in the next commands. This example has the foundation OpenFOAM sources. OpenFOAM from ESI has also been tested. To share the installation between the different compute nodes, install on the network file system.   
+If you want to install from sources, modify the path to the tarballs in the next commands. This example has the foundation OpenFOAM sources. OpenFOAM from ESI has also been tested. To share the installation between the different compute nodes, install on the network file system. This needs to be run from on of the compute nodes (example: hpc-node-1)
 
 ```
 sudo yum groupinstall -y 'Development Tools'
